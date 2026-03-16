@@ -9,6 +9,12 @@ The Emergency SOS System is designed to provide immediate assistance in emergenc
 - **User-Friendly Interface**: Easy to use application for both users and responders.
 - **Multiple Communication Channels**: Supports SMS, email, and emergency calls.
 
+## Nearby Places Technology (Planned)
+The nearby places feature is currently stubbed in `script.js` and will use the technologies already present in this project:
+- **Google Maps JavaScript API**: Renders the map and visualizes nearby resources.
+- **Browser Geolocation API**: Captures the user's current location.
+- **Vanilla JavaScript + HTML/CSS UI**: Handles API calls, filtering, and on-screen display.
+
 ## Installation and Setup Instructions
 
 ### Prerequisites
