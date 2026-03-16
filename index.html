@@ -1,1 +1,49 @@
-<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Emergency SOS System</title>\n    <link rel="stylesheet" href="styles.css">\n    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>\n    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>\n    <style>\n        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }\n        header { background: #f44336; padding: 10px; text-align: center; color: white; }\n        #map { height: 400px; width: 100%; }\n        #alert { display: none; background: #ffcc00; padding: 10px; margin: 10px; }\n        .container { padding: 20px; }\n        button.sos { background: green; color: white; padding: 10px 20px; font-size: 20px; border: none; cursor: pointer; }\n    </style>\n</head>\n<body>\n    <header>\n        <h1>Emergency SOS System</h1>\n    </header>\n    <div class="container">\n        <button class="sos" onclick="sendSOS()">SOS</button>\n        <div id="map"></div>\n        <div id="alert">Alert sent! Help is on the way!</div>\n        <section>\n            <h2>Features</h2>\n            <ul>\n                <li>Real-time location tracking</li>\n                <li>Instant alerts to emergency contacts</li>\n                <li>Live map integration</li>\n            </ul>\n        </section>\n    </div>\n    <script>\n        function initMap() {\n            var location = {lat: -34.397, lng: 150.644};\n            var map = new google.maps.Map(document.getElementById('map'), {\n                zoom: 8,\n                center: location\n            });\n            var marker = new google.maps.Marker({\n                position: location,\n                map: map\n            });\n        }\n        function sendSOS() {\n            document.getElementById('alert').style.display = 'block';\n            // Implement alert functionality here\n        }\n    </script>\n</body>\n</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency SOS System</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap" async defer></script>
+    <script src="script.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        header { background: #f44336; padding: 10px; text-align: center; color: white; }
+        #map { height: 400px; width: 100%; }
+        #alert { display: none; background: #ffcc00; padding: 10px; margin: 10px; }
+        .container { padding: 20px; }
+        button.sos { background: green; color: white; padding: 10px 20px; font-size: 20px; border: none; cursor: pointer; }
+        button.nearby-btn { background: #1565C0; color: white; padding: 10px 20px; font-size: 16px; border: none; cursor: pointer; margin-left: 10px; border-radius: 4px; }
+        button.nearby-btn:hover { background: #0D47A1; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Emergency SOS System</h1>
+    </header>
+    <div class="container">
+        <button class="sos" onclick="sendSOS()">SOS</button>
+        <button class="nearby-btn" onclick="findNearbyResources()">Find Nearby Resources</button>
+        <div id="map"></div>
+        <div id="alert">Alert sent! Help is on the way!</div>
+        <div id="nearby-results"></div>
+        <section>
+            <h2>Features</h2>
+            <ul>
+                <li>Real-time location tracking</li>
+                <li>Instant alerts to emergency contacts</li>
+                <li>Live map integration</li>
+                <li>Find nearby hospitals, police stations, and fire stations</li>
+            </ul>
+        </section>
+    </div>
+    <script>
+        function sendSOS() {
+            document.getElementById('alert').style.display = 'block';
+            // Implement alert functionality here
+        }
+    </script>
+</body>
+</html>
