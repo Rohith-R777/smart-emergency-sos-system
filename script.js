@@ -33,28 +33,33 @@ function trackLocation() {
             map.setCenter(pos);
 
             // Add or update user marker
-            if (userMarker) {
-                userMarker.setPosition(pos);
-            } else {
-                userMarker = new google.maps.Marker({
-                    position: pos,
-                    map: map,
-                    title: 'Your Location',
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        scale: 10,
-                        fillColor: '#4285F4',
-                        fillOpacity: 1,
-                        strokeColor: '#ffffff',
-                        strokeWeight: 2
-                    }
-                });
-            }
+            createOrUpdateUserMarker(pos);
         }, function() {
             alert('Error: Unable to retrieve your location.');
         });
     } else {
         alert('Geolocation is not supported by this browser.');
+    }
+}
+
+// Create or update the user location marker on the map
+function createOrUpdateUserMarker(pos) {
+    if (userMarker) {
+        userMarker.setPosition(pos);
+    } else {
+        userMarker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            title: 'Your Location',
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 10,
+                fillColor: '#4285F4',
+                fillOpacity: 1,
+                strokeColor: '#ffffff',
+                strokeWeight: 2
+            }
+        });
     }
 }
 
@@ -194,23 +199,7 @@ function findNearbyResources() {
         map.setZoom(14);
 
         // Add or update user marker
-        if (userMarker) {
-            userMarker.setPosition(pos);
-        } else {
-            userMarker = new google.maps.Marker({
-                position: pos,
-                map: map,
-                title: 'Your Location',
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 10,
-                    fillColor: '#4285F4',
-                    fillOpacity: 1,
-                    strokeColor: '#ffffff',
-                    strokeWeight: 2
-                }
-            });
-        }
+        createOrUpdateUserMarker(pos);
 
         // Clear previous results
         clearNearbyMarkers();
@@ -221,9 +210,9 @@ function findNearbyResources() {
 
         // Search for emergency-related places within a 5 km radius
         var placeTypes = [
-            { type: 'hospital', icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png' },
-            { type: 'police', icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' },
-            { type: 'fire_station', icon: 'http://maps.google.com/mapfiles/ms/icons/orange-dot.png' }
+            { type: 'hospital', icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png' },
+            { type: 'police', icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png' },
+            { type: 'fire_station', icon: 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png' }
         ];
 
         for (var i = 0; i < placeTypes.length; i++) {

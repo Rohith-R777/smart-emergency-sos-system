@@ -72,7 +72,7 @@ The **Nearby Places** feature helps users find emergency resources (hospitals, p
 | **Google Maps Places API (Nearby Search)** | Searches for nearby places by type (hospital, police, fire_station) within a specified radius of the user's location |
 | **Browser Geolocation API** | Retrieves the user's current latitude and longitude coordinates using the browser's built-in `navigator.geolocation` |
 | **Google Maps Markers & InfoWindows** | Displays location pins on the map with clickable info popups showing place name, address, and rating |
-| **jQuery 3.6.0** | Included for potential DOM manipulation and AJAX support |
+| **jQuery 3.6.0** | Loaded in the page for potential DOM manipulation and AJAX support (not directly used by the nearby places feature) |
 
 ### How It Works
 1. The user clicks the **"Find Nearby Resources"** button.
