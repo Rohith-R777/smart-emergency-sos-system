@@ -3,14 +3,14 @@
 ## Overview
 The Emergency SOS System is designed to provide immediate assistance in emergency situations by notifying pre-defined contacts and utilizing various communication methods to ensure help arrives swiftly.
 
-## Features
-- **Instant Notifications**: Sends alerts to emergency contacts via SMS and email.
-- **Location Tracking**: Shares the user's location with emergency services.
+## Features (MVP)
+- **Instant Notifications (MVP)**: Logs SOS alerts via the built-in PHP endpoint (SMS/email integrations are planned).
+- **Location Tracking**: Captures the user's location with the browser's Geolocation API.
 - **User-Friendly Interface**: Easy to use application for both users and responders.
-- **Multiple Communication Channels**: Supports SMS, email, and emergency calls.
+- **Multiple Communication Channels (Planned)**: SMS, email, and emergency calls.
 
 ## Nearby Places Technology (Planned)
-The nearby places feature is currently stubbed in `script.js` and will use the technologies already present in this project:
+The nearby places feature is planned and will use the technologies already present in this project:
 - **Google Maps JavaScript API**: Renders the map and visualizes nearby resources.
 - **Browser Geolocation API**: Captures the user's current location.
 - **Vanilla JavaScript + HTML/CSS UI**: Handles API calls, filtering, and on-screen display.
@@ -18,10 +18,9 @@ The nearby places feature is currently stubbed in `script.js` and will use the t
 ## Installation and Setup Instructions
 
 ### Prerequisites
-- **Node.js**: Ensure you have Node.js installed. You can download it from [Node.js Official Website](https://nodejs.org/).
-- **npm**: npm comes with Node.js installation.
-- **Twilio Account**: Sign up for a Twilio account for SMS notifications. Obtain your Account SID, Auth Token, and a Twilio phone number.
-- **Email Service**: Set up an email service, such as SendGrid or SMTP, for sending email notifications.
+- **PHP 8+**: Used for the lightweight alert endpoint (`api/send-alerts.php`).
+- **Google Maps JavaScript API key**: Required to render the map.
+- **Twilio/Email Service (Planned)**: SMS/email integrations are not wired yet.
 
 ### Steps to Set Up
 1. **Clone the Repository**  
@@ -31,32 +30,18 @@ The nearby places feature is currently stubbed in `script.js` and will use the t
    cd smart-emergency-sos-system
    ```  
 
-2. **Install Dependencies**  
-   Install the necessary packages with npm:
+2. **Add your Maps API key**  
+   Replace `YOUR_API_KEY` in `index.html` with your Google Maps JavaScript API key.
+
+3. **Run the Application**  
+   Start a PHP development server in the project root:
    ```bash
-   npm install
+   php -S localhost:8000
    ```  
+   The application will be running on `http://localhost:8000/index.html`.
 
-3. **Configure Environment Variables**  
-   Create a `.env` file in the root directory of the project and add the following variables:
-   ```env
-   TWILIO_ACCOUNT_SID=your_twilio_account_sid
-   TWILIO_AUTH_TOKEN=your_twilio_auth_token
-   TWILIO_PHONE_NUMBER=your_twilio_phone_number
-   EMAIL_SERVICE=your_email_service
-   EMAIL_USER=your_email
-   EMAIL_PASS=your_email_password
-   ```  
-
-4. **Run the Application**  
-   Start the server:
-   ```bash
-   npm start
-   ```  
-   The application will be running on `http://localhost:3000`.
-
-5. **Testing the Application**  
-   You can test the application by triggering the SOS feature and ensuring notifications are being sent correctly.
+4. **Testing the Application**  
+   Trigger the SOS feature and confirm an entry is appended to `api/alerts.log`.
 
 ## Usage Instructions
 - To send emergency notifications, simply press the 'SOS' button within the application. This will trigger the alert process.
