@@ -80,7 +80,7 @@ if ($timestampRaw !== '') {
         http_response_code(400);
         echo json_encode([
             'status' => 'error',
-            'message' => 'Timestamp must be a valid ISO 8601 value within 10 minutes of the current time.'
+            'message' => 'Timestamp must be a valid ISO 8601 value near the current time.'
         ]);
         exit;
     }
