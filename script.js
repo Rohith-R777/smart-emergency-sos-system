@@ -89,7 +89,11 @@ async function sendSOS() {
         };
         updateMapPosition(payload.location);
     } catch (error) {
-        setAlert(`${error.message} Sending SOS without location...`);
+        const errorMessage = error instanceof Error && error.message
+            ? error.message.trim()
+            : 'Location unavailable';
+        const suffix = errorMessage.endsWith('.') ? '' : '.';
+        setAlert(`${errorMessage}${suffix} Sending SOS without location...`);
     }
 
     try {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 header('Content-Type: application/json');
 
 const MAX_MESSAGE_LENGTH = 280;
-const MAX_TIMESTAMP_LENGTH = 64;
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -29,7 +28,12 @@ if ($message === '') {
 }
 
 if (strlen($message) > MAX_MESSAGE_LENGTH) {
-    $message = substr($message, 0, MAX_MESSAGE_LENGTH);
+    http_response_code(400);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Message exceeds the maximum length.'
+    ]);
+    exit;
 }
 
 $location = null;
@@ -42,15 +46,29 @@ if (isset($data['location']) && is_array($data['location'])) {
     }
 }
 
-$timestamp = trim((string)($data['timestamp'] ?? ''));
-if ($timestamp !== '' && strlen($timestamp) > MAX_TIMESTAMP_LENGTH) {
-    $timestamp = substr($timestamp, 0, MAX_TIMESTAMP_LENGTH);
+$timestampRaw = trim((string)($data['timestamp'] ?? ''));
+$timestamp = null;
+if ($timestampRaw !== '') {
+    $normalizedTimestamp = str_replace('Z', '+00:00', $timestampRaw);
+    $timestampObject = DateTimeImmutable::createFromFormat(DateTimeInterface::ATOM, $normalizedTimestamp)
+        ?: DateTimeImmutable::createFromFormat('Y-m-d\\TH:i:s.uP', $normalizedTimestamp);
+
+    if (!$timestampObject) {
+        http_response_code(400);
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Invalid timestamp format.'
+        ]);
+        exit;
+    }
+
+    $timestamp = $timestampObject->format(DateTimeInterface::ATOM);
 }
 
 $record = [
     'message' => $message,
     'location' => $location,
-    'timestamp' => $timestamp !== '' ? $timestamp : null,
+    'timestamp' => $timestamp,
     'received_at' => gmdate('c')
 ];
 
