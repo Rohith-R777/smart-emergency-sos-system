@@ -5,6 +5,7 @@ header('Content-Type: application/json');
 
 const MAX_MESSAGE_LENGTH_CHARS = 280;
 const MAX_TIMESTAMP_SKEW_SECONDS = 600;
+const ALERT_LOG_FILENAME = 'sos-alerts.log';
 
 function parseLocation(array $locationData): ?array
 {
@@ -93,7 +94,7 @@ $record = [
     'received_at' => gmdate('c')
 ];
 
-$logFile = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'sos-alerts.log';
+$logFile = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . ALERT_LOG_FILENAME;
 $writeResult = file_put_contents(
     $logFile,
     json_encode($record, JSON_UNESCAPED_SLASHES) . PHP_EOL,
