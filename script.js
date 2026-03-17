@@ -92,8 +92,7 @@ async function sendSOS() {
         const errorMessage = error instanceof Error && error.message
             ? error.message.trim()
             : 'Location unavailable';
-        const suffix = errorMessage.endsWith('.') ? '' : '.';
-        setAlert(`${errorMessage}${suffix} Sending SOS without location...`);
+        setAlert(`${errorMessage} Sending SOS without location...`);
     }
 
     try {

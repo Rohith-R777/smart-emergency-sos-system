@@ -5,6 +5,35 @@ header('Content-Type: application/json');
 
 const MAX_MESSAGE_LENGTH = 280;
 
+function parseLocation(array $locationData): ?array
+{
+    $lat = filter_var($locationData['lat'] ?? null, FILTER_VALIDATE_FLOAT);
+    $lng = filter_var($locationData['lng'] ?? null, FILTER_VALIDATE_FLOAT);
+
+    if ($lat === false || $lng === false) {
+        return null;
+    }
+
+    if ($lat < -90 || $lat > 90 || $lng < -180 || $lng > 180) {
+        return null;
+    }
+
+    return ['lat' => $lat, 'lng' => $lng];
+}
+
+function parseIsoTimestamp(string $timestampRaw): ?string
+{
+    $normalizedTimestamp = str_replace('Z', '+00:00', $timestampRaw);
+    $timestampObject = DateTimeImmutable::createFromFormat(DateTimeInterface::ATOM, $normalizedTimestamp)
+        ?: DateTimeImmutable::createFromFormat('Y-m-d\\TH:i:s.uP', $normalizedTimestamp);
+
+    if (!$timestampObject) {
+        return null;
+    }
+
+    return $timestampObject->format(DateTimeInterface::ATOM);
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['status' => 'error', 'message' => 'Method not allowed.']);
@@ -38,22 +67,14 @@ if (strlen($message) > MAX_MESSAGE_LENGTH) {
 
 $location = null;
 if (isset($data['location']) && is_array($data['location'])) {
-    $lat = filter_var($data['location']['lat'] ?? null, FILTER_VALIDATE_FLOAT);
-    $lng = filter_var($data['location']['lng'] ?? null, FILTER_VALIDATE_FLOAT);
-
-    if ($lat !== false && $lng !== false) {
-        $location = ['lat' => $lat, 'lng' => $lng];
-    }
+    $location = parseLocation($data['location']);
 }
 
 $timestampRaw = trim((string)($data['timestamp'] ?? ''));
 $timestamp = null;
 if ($timestampRaw !== '') {
-    $normalizedTimestamp = str_replace('Z', '+00:00', $timestampRaw);
-    $timestampObject = DateTimeImmutable::createFromFormat(DateTimeInterface::ATOM, $normalizedTimestamp)
-        ?: DateTimeImmutable::createFromFormat('Y-m-d\\TH:i:s.uP', $normalizedTimestamp);
-
-    if (!$timestampObject) {
+    $timestamp = parseIsoTimestamp($timestampRaw);
+    if (!$timestamp) {
         http_response_code(400);
         echo json_encode([
             'status' => 'error',
@@ -61,8 +82,6 @@ if ($timestampRaw !== '') {
         ]);
         exit;
     }
-
-    $timestamp = $timestampObject->format(DateTimeInterface::ATOM);
 }
 
 $record = [
