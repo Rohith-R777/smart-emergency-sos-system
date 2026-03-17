@@ -41,7 +41,7 @@ The nearby places feature is planned and will use the technologies already prese
    The application will be running on `http://localhost:8000/index.html`.
 
 4. **Testing the Application**  
-   Trigger the SOS feature and confirm an entry is appended to `api/alerts.log`.
+   Trigger the SOS feature and confirm an entry is appended to your system temp directory as `sos-alerts.log`.
 
 ## Usage Instructions
 - To send emergency notifications, simply press the 'SOS' button within the application. This will trigger the alert process.

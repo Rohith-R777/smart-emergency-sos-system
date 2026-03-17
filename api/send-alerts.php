@@ -4,6 +4,7 @@ declare(strict_types=1);
 header('Content-Type: application/json');
 
 const MAX_MESSAGE_LENGTH_CHARS = 280;
+const MAX_TIMESTAMP_SKEW_SECONDS = 600;
 
 function parseLocation(array $locationData): ?array
 {
@@ -25,6 +26,10 @@ function parseIsoTimestamp(string $timestampRaw): ?string
 {
     $timestamp = strtotime($timestampRaw);
     if ($timestamp === false) {
+        return null;
+    }
+
+    if (abs(time() - $timestamp) > MAX_TIMESTAMP_SKEW_SECONDS) {
         return null;
     }
 
@@ -75,7 +80,7 @@ if ($timestampRaw !== '') {
         http_response_code(400);
         echo json_encode([
             'status' => 'error',
-            'message' => 'Invalid timestamp format.'
+            'message' => 'Timestamp must be a valid ISO 8601 value within 10 minutes of the current time.'
         ]);
         exit;
     }
@@ -88,7 +93,7 @@ $record = [
     'received_at' => gmdate('c')
 ];
 
-$logFile = __DIR__ . '/alerts.log';
+$logFile = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'sos-alerts.log';
 $writeResult = file_put_contents(
     $logFile,
     json_encode($record, JSON_UNESCAPED_SLASHES) . PHP_EOL,

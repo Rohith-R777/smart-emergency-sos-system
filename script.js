@@ -2,17 +2,14 @@ let map;
 let marker;
 const fallbackLocation = { lat: 0, lng: 0 };
 const GEOLOCATION_TIMEOUT_MS = 10000;
+const FALLBACK_ZOOM = 2;
+const ACTIVE_ZOOM = 15;
 const ALERT_ENDPOINT = '/api/send-alerts.php';
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 8,
+        zoom: FALLBACK_ZOOM,
         center: fallbackLocation
-    });
-
-    marker = new google.maps.Marker({
-        position: fallbackLocation,
-        map: map
     });
 }
 
@@ -22,7 +19,7 @@ function updateMapPosition(position) {
     }
 
     map.setCenter(position);
-    map.setZoom(15);
+    map.setZoom(ACTIVE_ZOOM);
 
     if (marker) {
         marker.setPosition(position);
