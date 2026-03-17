@@ -1,6 +1,8 @@
 let map;
 let marker;
 const defaultLocation = { lat: -34.397, lng: 150.644 };
+const GEOLOCATION_TIMEOUT_MS = 10000;
+const ALERT_ENDPOINT = '/api/send-alerts.php';
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -63,7 +65,7 @@ function getCurrentPosition() {
 
         navigator.geolocation.getCurrentPosition(resolve, reject, {
             enableHighAccuracy: true,
-            timeout: 10000,
+            timeout: GEOLOCATION_TIMEOUT_MS,
             maximumAge: 0
         });
     });
@@ -91,7 +93,7 @@ async function sendSOS() {
     }
 
     try {
-        const response = await fetch('api/send-alerts.php', {
+        const response = await fetch(ALERT_ENDPOINT, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)

@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 header('Content-Type: application/json');
 
+const MAX_MESSAGE_LENGTH = 280;
+const MAX_TIMESTAMP_LENGTH = 64;
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['status' => 'error', 'message' => 'Method not allowed.']);
@@ -25,8 +28,8 @@ if ($message === '') {
     exit;
 }
 
-if (strlen($message) > 280) {
-    $message = substr($message, 0, 280);
+if (strlen($message) > MAX_MESSAGE_LENGTH) {
+    $message = substr($message, 0, MAX_MESSAGE_LENGTH);
 }
 
 $location = null;
@@ -40,8 +43,8 @@ if (isset($data['location']) && is_array($data['location'])) {
 }
 
 $timestamp = trim((string)($data['timestamp'] ?? ''));
-if ($timestamp !== '' && strlen($timestamp) > 64) {
-    $timestamp = substr($timestamp, 0, 64);
+if ($timestamp !== '' && strlen($timestamp) > MAX_TIMESTAMP_LENGTH) {
+    $timestamp = substr($timestamp, 0, MAX_TIMESTAMP_LENGTH);
 }
 
 $record = [
