@@ -56,6 +56,23 @@ function setSosButtonLoading(isLoading) {
     sosButton.textContent = isLoading ? 'Sending...' : 'SOS';
 }
 
+function getLocationErrorMessage(error) {
+    if (!error || typeof error.code !== 'number') {
+        return 'Unable to determine your location.';
+    }
+
+    switch (error.code) {
+        case 1:
+            return 'Location access was denied.';
+        case 2:
+            return 'Unable to determine your location.';
+        case 3:
+            return 'Location request timed out.';
+        default:
+            return 'Unable to determine your location.';
+    }
+}
+
 function getCurrentPosition() {
     return new Promise((resolve, reject) => {
         if (!navigator.geolocation) {
@@ -63,7 +80,9 @@ function getCurrentPosition() {
             return;
         }
 
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
+        navigator.geolocation.getCurrentPosition(resolve, (error) => {
+            reject(new Error(getLocationErrorMessage(error)));
+        }, {
             enableHighAccuracy: true,
             timeout: GEOLOCATION_TIMEOUT_MS,
             maximumAge: 0
@@ -106,7 +125,15 @@ async function sendSOS() {
             throw new Error('Unable to send SOS at this time.');
         }
 
-        const data = await response.json().catch(() => ({}));
+        const responseText = await response.text();
+        let data = {};
+        if (responseText) {
+            try {
+                data = JSON.parse(responseText);
+            } catch (parseError) {
+                throw new Error('Received an invalid response from the server.');
+            }
+        }
         const fallbackMessage = payload.location
             ? 'Alert sent! Help is on the way!'
             : 'Alert sent without location. Help is on the way!';

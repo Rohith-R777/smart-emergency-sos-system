@@ -23,15 +23,12 @@ function parseLocation(array $locationData): ?array
 
 function parseIsoTimestamp(string $timestampRaw): ?string
 {
-    $normalizedTimestamp = str_replace('Z', '+00:00', $timestampRaw);
-    $timestampObject = DateTimeImmutable::createFromFormat(DateTimeInterface::ATOM, $normalizedTimestamp)
-        ?: DateTimeImmutable::createFromFormat('Y-m-d\\TH:i:s.uP', $normalizedTimestamp);
-
-    if (!$timestampObject) {
+    $timestamp = strtotime($timestampRaw);
+    if ($timestamp === false) {
         return null;
     }
 
-    return $timestampObject->format(DateTimeInterface::ATOM);
+    return gmdate(DateTimeInterface::ATOM, $timestamp);
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
