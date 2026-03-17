@@ -1,17 +1,17 @@
 let map;
 let marker;
-const defaultLocation = { lat: -34.397, lng: 150.644 };
+const fallbackLocation = { lat: 0, lng: 0 };
 const GEOLOCATION_TIMEOUT_MS = 10000;
 const ALERT_ENDPOINT = '/api/send-alerts.php';
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 8,
-        center: defaultLocation
+        center: fallbackLocation
     });
 
     marker = new google.maps.Marker({
-        position: defaultLocation,
+        position: fallbackLocation,
         map: map
     });
 }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 header('Content-Type: application/json');
 
-const MAX_MESSAGE_LENGTH = 280;
+const MAX_MESSAGE_LENGTH_CHARS = 280;
 
 function parseLocation(array $locationData): ?array
 {
@@ -56,7 +56,7 @@ if ($message === '') {
     exit;
 }
 
-if (strlen($message) > MAX_MESSAGE_LENGTH) {
+if (strlen($message) > MAX_MESSAGE_LENGTH_CHARS) {
     http_response_code(400);
     echo json_encode([
         'status' => 'error',
@@ -92,11 +92,20 @@ $record = [
 ];
 
 $logFile = __DIR__ . '/alerts.log';
-file_put_contents(
+$writeResult = file_put_contents(
     $logFile,
     json_encode($record, JSON_UNESCAPED_SLASHES) . PHP_EOL,
     FILE_APPEND | LOCK_EX
 );
+
+if ($writeResult === false) {
+    http_response_code(500);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Unable to record the alert at this time.'
+    ]);
+    exit;
+}
 
 echo json_encode([
     'status' => 'ok',

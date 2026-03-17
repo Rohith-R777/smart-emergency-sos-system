@@ -46,6 +46,7 @@ The nearby places feature is planned and will use the technologies already prese
 ## Usage Instructions
 - To send emergency notifications, simply press the 'SOS' button within the application. This will trigger the alert process.
 - Users can also specify which contacts they want to alert in the settings section.
+- Alert messages recorded by the MVP endpoint are limited to 280 characters.
 
 ## Contributions
 Contributions to the Emergency SOS System are welcome! Feel free to raise pull requests.
