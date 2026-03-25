@@ -58,3 +58,25 @@ The Emergency SOS System is designed to provide immediate assistance in emergenc
 
 ## Contributions
 Contributions to the Emergency SOS System are welcome! Feel free to raise pull requests.
+
+## Technologies Used in Nearby Places Feature
+
+The **Nearby Places** feature helps users find emergency resources (hospitals, police stations, and fire stations) close to their current location. Below are the technologies used to build this feature:
+
+| Technology | Purpose |
+|---|---|
+| **HTML5** | Structure and layout of the nearby places UI, including the results container and list elements |
+| **CSS3** | Styling for the nearby places results, section cards, badges (open/closed status, ratings), and responsive layout |
+| **JavaScript (Vanilla JS)** | Core logic for geolocation requests, API calls, DOM manipulation, and rendering results dynamically |
+| **Google Maps JavaScript API** | Renders the interactive map, places markers for found locations, and displays info windows on marker click |
+| **Google Maps Places API (Nearby Search)** | Searches for nearby places by type (hospital, police, fire_station) within a specified radius of the user's location |
+| **Browser Geolocation API** | Retrieves the user's current latitude and longitude coordinates using the browser's built-in `navigator.geolocation` |
+| **Google Maps Markers & InfoWindows** | Displays location pins on the map with clickable info popups showing place name, address, and rating |
+| **jQuery 3.6.0** | Loaded in the page for potential DOM manipulation and AJAX support (not directly used by the nearby places feature) |
+
+### How It Works
+1. The user clicks the **"Find Nearby Resources"** button.
+2. The **Browser Geolocation API** (`navigator.geolocation`) retrieves the user's current GPS coordinates.
+3. The map centers on the user's location using the **Google Maps JavaScript API**.
+4. The **Google Maps Places API (Nearby Search)** is called for each emergency resource type (hospital, police, fire_station) within a 5 km radius.
+5. Results are displayed both as **markers on the map** (with clickable info windows) and as a **styled list** below the map showing name, address, rating, and open/closed status.
