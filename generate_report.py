@@ -818,8 +818,10 @@ def generate_report():
     pdf.cell(0, 6, "Smart Emergency SOS System - Project Report", align="C", new_x="LMARGIN", new_y="NEXT")
     pdf.cell(0, 6, "Author: Rohith R | License: MIT | March 2026", align="C", new_x="LMARGIN", new_y="NEXT")
 
-    # Save the PDF
-    output_path = "/home/runner/work/smart-emergency-sos-system/smart-emergency-sos-system/Smart_Emergency_SOS_System_Project_Report.pdf"
+    # Save the PDF in the same directory as this script
+    import os
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    output_path = os.path.join(script_dir, "Smart_Emergency_SOS_System_Project_Report.pdf")
     pdf.output(output_path)
     print(f"Report generated successfully: {output_path}")
     return output_path
